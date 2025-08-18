@@ -1,6 +1,7 @@
 package com.hotelbooking.Hotel.Booking.repo;
 
 import com.hotelbooking.Hotel.Booking.entity.Room;
+import org.aspectj.util.IStructureModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -10,4 +11,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Query("")
     List<String> findDistinctRoomTypes();
+
+
 }
