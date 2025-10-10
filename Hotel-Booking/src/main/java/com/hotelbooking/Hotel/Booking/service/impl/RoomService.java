@@ -136,16 +136,67 @@ public class RoomService implements IRoomService {
 
     @Override
     public Response getRoomById(Long roomId) {
-        return null;
+        Response response = new Response();
+
+        try {
+           Room room = roomRepository.findById(roomId).orElseThrow(() -> new OurException("Room not found"));
+            RoomDTO roomDTO = Utils.mapRoomEntityToRoomDTOPlusBookings(room);
+            response.setStatusCode(200);
+            response.setMessage("Successful");
+            response.setRoom(roomDTO);
+
+        } catch (OurException e) {
+            response.setStatusCode(404);
+            response.setMessage(e.getMessage());
+        }
+        catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage("Error saving a room" + e.getMessage());
+        }
+
+        return response;
     }
 
     @Override
     public Response getAvailableRoomsByDataAndType(LocalDate checkInDate, LocalDate checkOutDate, String roomType) {
-        return null;
+        Response response = new Response();
+
+        try {
+           List<Room> availableRooms = roomRepository.findAvailableRoomNByDatesAndTypes(checkInDate, checkOutDate, roomType);
+           List<RoomDTO> roomDTOList = Utils.mapRoomListEntityToRoomListDTO(availableRooms);
+            response.setStatusCode(200);
+            response.setMessage("Successful");
+            response.setRoomList(roomDTOList);
+
+        }
+        catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage("Error saving a room" + e.getMessage());
+        }
+
+        return response;
     }
 
     @Override
     public Response getAllAvailableRooms() {
-        return null;
+        Response response = new Response();
+
+        try {
+            List<Room> roomList = roomRepository.getAllAvailableRooms();
+            List<RoomDTO> roomDTOList = Utils.mapRoomListEntityToRoomListDTO(roomList);
+            response.setStatusCode(200);
+            response.setMessage("Successful");
+            response.setRoomList(roomDTOList);
+
+        } catch (OurException e) {
+            response.setStatusCode(404);
+            response.setMessage(e.getMessage());
+        }
+        catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage("Error saving a room" + e.getMessage());
+        }
+
+        return response;
     }
 }
