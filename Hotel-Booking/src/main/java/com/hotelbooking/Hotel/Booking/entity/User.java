@@ -23,12 +23,16 @@ public class User  implements UserDetails {
     @NotBlank(message = "Email is required")
     @Column(unique = true)
     private String email;
+
     @NotBlank(message = "Name is required")
     private String name;
+
     @NotBlank(message = "Phone Number is required")
     private String phoneNumber;
+
     @NotBlank(message = "Password is required")
     private String password;
+
     private String role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -37,11 +41,6 @@ public class User  implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role));
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
     }
 
 
@@ -69,4 +68,5 @@ public class User  implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

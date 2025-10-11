@@ -1,12 +1,12 @@
 package com.hotelbooking.Hotel.Booking.security;
 
+import com.hotelbooking.Hotel.Booking.service.CustomUserDetailsService;
 import com.hotelbooking.Hotel.Booking.utils.JWTUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.CachingUserDetailsService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,7 +24,7 @@ public class JWTAuthFilter extends OncePerRequestFilter { // this class check if
    private JWTUtils jwtUtils;
 
    @Autowired
-   private CachingUserDetailsService cachingUserDetailsService;
+   private CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -43,7 +43,7 @@ public class JWTAuthFilter extends OncePerRequestFilter { // this class check if
 
         if (userEmails != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = cachingUserDetailsService.loadUserByUsername(userEmails);
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(userEmails);
             if (jwtUtils.isValidToken(jwtToken, userDetails)) {
                 SecurityContext securityContext =SecurityContextHolder.createEmptyContext();
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

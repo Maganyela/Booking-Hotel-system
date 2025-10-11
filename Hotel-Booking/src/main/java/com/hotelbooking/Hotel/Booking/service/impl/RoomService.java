@@ -11,20 +11,25 @@ import com.hotelbooking.Hotel.Booking.service.interfaces.IRoomService;
 import com.hotelbooking.Hotel.Booking.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class RoomService implements IRoomService {
 
     @Autowired
     private RoomRepository roomRepository;
+
     @Autowired
     private BookingRepository bookingRepository;
+
     @Autowired
     private AwsS3Service awsS3Service;
+
     @Override
     public Response addNewRoom(MultipartFile photo, String roomType, BigDecimal roomPrice, String description) {
        Response response = new Response();
